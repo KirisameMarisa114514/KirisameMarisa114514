@@ -12,10 +12,9 @@ def is_admin():
     检查是否具有管理员权限
     """
     try:
-        # 调用Windows API的IsUserAnAdmin函数检查用户是否具有管理员权限
+        # 检查用户是否具有管理员权限
         return ctypes.windll.shell32.IsUserAnAdmin()
     except:
-        # 如果调用过程中出现异常，则返回False
         return False
 class ClickerApp():
     def __init__(self):
@@ -29,7 +28,7 @@ class ClickerApp():
     
     def ui(self):
         """
-        设置用户界面方法，包含窗口大小、标题、标签和图标等
+        用户界面
         """       
         self.window.geometry("1257x793")  # 窗口大小
         self.window.title("连点器")  # 标题
@@ -41,11 +40,11 @@ class ClickerApp():
             self.bg_image = ImageTk.PhotoImage(Image.open(r"D:\vscode\code\Pyhon\clicking_picture.png"))  # 加载背景图片
             self.canvas.create_image(0, 0, anchor=tk.NW, image=self.bg_image)
         except:
-            pass        #添加控件放置区域
+            pass        #控件区域
         self.frame = tk.Frame(self.canvas,bg='', relief=tk.FLAT, bd=0)
         self.canvas.create_window(628,369,window=self.frame)
         
-        tk.Label(self.frame, text="连点间隔（秒） :").grid(row=0, column=0)  # 添加标签并使用网格布局
+        tk.Label(self.frame, text="连点间隔（秒） :").grid(row=0, column=0)  # 标签并用网格布局
         self.entry_time = tk.Entry(self.frame)
         self.entry_time.grid(row=0, column=1)  # 创建一个文本框
         self.content_time = self.entry_time.get()
@@ -55,25 +54,25 @@ class ClickerApp():
         except:
             pass
         
-        tk.Label(self.frame, text="连点的按键        :").grid(row=1, column=0)  # 添加标签并使用网格布局
+        tk.Label(self.frame, text="连点的按键        :").grid(row=1, column=0)  # 标签并用网格布局
         
         self.entry_clicks = tk.Entry(self.frame)
-        self.entry_clicks.grid(row=1, column=1)  # 创建一个文本框
+        self.entry_clicks.grid(row=1, column=1)  # 创建文本框
         
-        button_start = tk.Button(self.frame, text="开始",command=self.start_clicking, font=("微软雅黑",10,"bold"), width=4, height=1) # 创建一个按钮
-        button_start.grid(row=2, column=0, columnspan=2) # 创建开始按钮
-        button_stop = tk.Button(self.frame, text="停止",command=self.stop_clicking, font=("微软雅黑",10,"bold"), width=4, height=1) # 创建一个按钮
-        button_stop.grid(row=3, column=0, columnspan=2) # 创建停止按钮
+        button_start = tk.Button(self.frame, text="开始",command=self.start_clicking, font=("微软雅黑",10,"bold"), width=4, height=1)
+        button_start.grid(row=2, column=0, columnspan=2) # 开始按钮
+        button_stop = tk.Button(self.frame, text="停止",command=self.stop_clicking, font=("微软雅黑",10,"bold"), width=4, height=1)
+        button_stop.grid(row=3, column=0, columnspan=2) # 停止按钮
     def start_clicking(self):
         """
-        开始连点方法，用于启动连点器线程
+        开始
         """
         self.clicking = True
         def click_loop():
             while self.clicking:
                 try:
-                    pyautogui.press(self.entry_clicks.get()) # 模拟按下用户设置的按键
-                    time.sleep(float(self.entry_time.get())) # 等待用户设置的点击间隔时间
+                    pyautogui.press(self.entry_clicks.get()) # 用户设置的按键
+                    time.sleep(float(self.entry_time.get())) # 用户设置的间隔时间
                 except:
                     break
         self.click_thread = threading.Thread(target=click_loop)
@@ -82,13 +81,13 @@ class ClickerApp():
     
     def stop_clicking(self):
         """
-        停止连点方法，用于停止连点器线程
+        停止
         """
         self.clicking = False
         print("连点器已停止")
     
     def run(self):
-        self.window.mainloop()  # 进入Tkinter的主事件循环，显示窗口并等待用户交互
+        self.window.mainloop()
 
 if is_admin():
     app = ClickerApp()
